@@ -285,6 +285,13 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+    public int GetCurrentPoint()
+    {
+        return n_myPoint;
+    }
+
+    
     private void LateUpdate()
     {
         for (int i = 0; i <= trainingStackIcons.Length-1; i++)
