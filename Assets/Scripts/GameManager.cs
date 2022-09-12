@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     [Header("UIÆË¾÷Ã¢µé")]
     public GameObject popupTraining;
     public GameObject popupBattle;
+    public GameObject popupShop;
     public GameObject trainingSuccess, trainingFail, trainingGreatSuccess;
     public GameObject battleSuccess, battleFail, battleGreatSuccess;    
 
@@ -233,6 +234,19 @@ public class GameManager : MonoBehaviour
 
         trainingStack = 0;
         AddPoint(20);
+    }
+
+    public void ShowShop()
+    {
+        GameObject sh = Instantiate(popupShop);
+        sh.transform.SetParent(MainScreen.transform);
+
+
+        RectTransform rt = sh.GetComponent<RectTransform>();
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;       // right, top
+        rt.localScale = Vector3.one;
+
     }
 
     public void ClosePopUpButton(GameObject _o)

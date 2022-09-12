@@ -12,6 +12,7 @@ public class ShopAttendant : MonoBehaviour
     public Text txtItemName;
     public Text txtItemPrice;    
     public Text txtAfterPurchasePoint;
+    public GameObject btnBuy, btnClose;
 
     private void LateUpdate()
     {
@@ -33,13 +34,23 @@ public class ShopAttendant : MonoBehaviour
             for(int i = 0; i < itemList.transform.childCount; i++)
             {
                 itemList.transform.GetChild(i).GetComponent<ItemInfo>().SetShopAttendant(gameObject.GetComponent<ShopAttendant>());
+                itemList.transform.GetChild(i).GetComponent<ItemInfo>().itemId = i;
             }
+
+        btnClose.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.ClosePopUpButton(gameObject));
+
     }
 
-    public void SetItemPriceInfo(int _price)
+    public void SetItemPriceInfo(int _price, int _activeItemId)
     {
+        DeactivateOtherItems(_activeItemId);
+
         isItemSelected = true;
         txtItemPrice.text = _price.ToString() + " pt";
+
+        itemList.transform.GetChild(_activeItemId).GetComponent<ItemInfo>().isSet = true;
+        
+
         int afterpurchase = 0;
         afterpurchase = GameManager.Instance.GetCurrentPoint() - _price;
 
@@ -50,9 +61,20 @@ public class ShopAttendant : MonoBehaviour
             txtAfterPurchasePoint.color = new Color(0.85f,0.85f,0.85f);
         }
         else
-            txtAfterPurchasePoint.color = new Color(0.5f,0.028f,0.028f);
+            txtAfterPurchasePoint.color = new Color(1f,0.028f,0.028f);
     }
 
+    void DeactivateOtherItems(int _activeItemID)
+    {
+        if (itemList.transform.childCount > 0)
+            for (int i = 0; i < itemList.transform.childCount; i++)
+            {
+                if (i != _activeItemID)
+                {
+                    itemList.transform.GetChild(i).GetComponent<ItemInfo>().isSet = false;
+                }
+            }
+    }
     public void ClearItemPriceInfo()
     {
         isItemSelected = false;

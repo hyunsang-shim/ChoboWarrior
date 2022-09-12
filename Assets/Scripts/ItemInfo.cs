@@ -9,36 +9,40 @@ public class ItemInfo : MonoBehaviour
     public GameObject isSelected;
     public string itemName;
     public int itemPrice;
+    public int itemId;
     public ShopAttendant attendant;
-    public bool isSet = true;
+    public bool isSet = false;
     public Text txtItemName;
     public Text txtItemPrice;
 
     private void Awake()
     {
+        isSet = false;
         isSelected.SetActive(false);
     }
 
-    private void LateUpdate()
+    private void Start()
     {
+        if (attendant == null)
+        {
+            ShopAttendant tmp_SA = FindObjectOfType<ShopAttendant>().GetComponent<ShopAttendant>();
+            attendant = tmp_SA;
+        }
+        
+        GetComponent<Button>().onClick.AddListener(() => attendant.SetItemPriceInfo(itemPrice, itemId));
+
+
         txtItemName.text = itemName;
         txtItemPrice.text = itemPrice.ToString() + " pt";
     }
 
-    public void SetItemPrice()
+
+    private void LateUpdate()
     {
         if (isSet)
-        {
-            isSet = false;
             isSelected.SetActive(true);
-            attendant.SetItemPriceInfo(itemPrice);
-        }
         else
-        {
-            isSet = true;
             isSelected.SetActive(false);
-            attendant.ClearItemPriceInfo();
-        }
     }
 
     public void SetShopAttendant(ShopAttendant _ref)
