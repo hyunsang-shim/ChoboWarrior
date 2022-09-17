@@ -11,6 +11,7 @@ public class Training : MonoBehaviour
     string defaultString = "¼ö·ÃÁß";
     public float progress = 0;
     public float trainingSuccessRate = 0;
+    public float baseTrainingSuccessRate = 0;
     
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class Training : MonoBehaviour
         rt.localScale = Vector3.one;
         slider.maxValue = GameManager.Instance.GetTrainingTimerMax();
         trainingSuccessRate= GameManager.Instance.GetTrainingSuccessRate();
+        baseTrainingSuccessRate= GameManager.Instance.GetBaseTrainingSuccessRate();
 
         btnAbort.onClick.AddListener(() => GameManager.Instance.AbortTraining(gameObject));
     }
@@ -42,10 +44,10 @@ public class Training : MonoBehaviour
         {
             int k = Random.Range(0, 10000);
 
-            Debug.Log($"Training esult: {k} / {trainingSuccessRate}");
+            Debug.Log($"Training Result: {k} / {trainingSuccessRate}");
             if (k <= trainingSuccessRate)
             {
-                if (Random.Range(0,10000) < 2000)
+                if (k < (baseTrainingSuccessRate/2))
                     GameManager.Instance.ShowTrainingGreatSuccess();
                 else
                     GameManager.Instance.ShowTrainingSuccess();

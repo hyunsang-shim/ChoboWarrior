@@ -11,6 +11,7 @@ public class Battle : MonoBehaviour
     string defaultString = "РќХѕСп";
     public float progress = 0;
     float successRate = 0f;
+    float baseSuccessRate = 0f;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class Battle : MonoBehaviour
         btnAbort.onClick.AddListener(() => GameManager.Instance.AbortBattle(gameObject));
 
         successRate = GameManager.Instance.GetBattleSuccesssRate();
+        baseSuccessRate = GameManager.Instance.GetBaseBattleSuccesssRate();
     }
 
     private void FixedUpdate()
@@ -46,12 +48,8 @@ public class Battle : MonoBehaviour
             Debug.Log($"Battle Result:: {k} / {successRate}");
 
             if (k <= successRate)
-            {
-                int g = Random.Range(0, 10000);
-
-                Debug.Log($"Great Win Result: {g} / 2000");
-
-                if (g < 2000)
+            { 
+                if (k < (baseSuccessRate/2))
                     GameManager.Instance.ShowBattleGreatSuccess();
                 else
                     GameManager.Instance.ShowBattleSuccess();

@@ -7,17 +7,19 @@ public class GameManager : MonoBehaviour
 {
     [Header("Main UI 요소들")]
     public Image weaponImage, shieldImage, armorImage;
-    public Text weaponName, shieldName, armorName, myPoint;
+    public Text weaponName, shieldName, armorName, textMyPoints;
     public GameObject MainScreen;
     public Sprite[] ItemSprites;
+    public Sprite[] weaponSprites, shieldSprites, armorSprites;
     public GameObject[] trainingStackIcons;
+    public int itemCount = 0;
 
     [Header("저장 데이터")]
     public int n_myPoint;
-    public int trainingStack;
-
-    [Header("데이터베이스")]
+    public int trainingStack; 
     public int weaponIdx, shieldIdx, armorIdx;
+
+    [Header("데이터베이스")]   
     string[] weaponNames = { "싸구려 검", "좋은 검", "최강의 검" };
     string[] shieldNames = { "싸구려 방패", "좋은 방패", "최강의 방패" };
     string[] armorNames = { "싸구려 갑옷", "좋은 갑옷", "최강의 갑옷" };
@@ -25,15 +27,28 @@ public class GameManager : MonoBehaviour
     [Header("설정값들")]
     public int battleTimerMax;
     public int trainingTimerMax;
-    public float trainingSuccessRate;
+    public int baseTrainingSuccessRate;
+    public int trainingSuccessRate;
+    public int baseBattleSuccessRate;
+    public int battleSuccessRate;
+
+
+    [Header("밸런스 설정값")]
+    public int battleSuccessRatePerGear = 350;
+    public int trainingSuccessRatePerGear = 500;
+    public int battleSuccessRatePerTrainingStack = 500;
+    public int battleReward = 100;
+    public int trainingReward = 10;
 
     [Header("UI팝업창들")]
     public GameObject popupTraining;
     public GameObject popupBattle;
     public GameObject popupShop;
     public GameObject trainingSuccess, trainingFail, trainingGreatSuccess;
-    public GameObject battleSuccess, battleFail, battleGreatSuccess;    
+    public GameObject battleSuccess, battleFail, battleGreatSuccess;
 
+    [Header("기타 연관 요소들과 매니저")]
+    public SoundManager SM;
 
     private static GameManager sInstance;
     public static GameManager Instance
@@ -51,64 +66,99 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         sInstance = GetComponent<GameManager>();
-
-        ItemSprites.Initialize();
-        ItemSprites = Resources.LoadAll<Sprite>("Icons/choboWarrior_Icons");
-
-
         InitData();
-
     }
 
 
     void InitData()
-    {
+    {   
+        ItemSprites.Initialize();
+
+        /// 전체 아이템 스프라이트를 각각의 장비 스프라이트로 나눠서 넣는다.
+        ItemSprites = Resources.LoadAll<Sprite>("Icons/choboWarrior_Icons");
+
+        itemCount = ItemSprites.Length;
+
+
+        weaponSprites = new Sprite[3];
+        shieldSprites = new Sprite[3];
+        armorSprites = new Sprite[3];
+
+        // 무기 스프라이트 나눠넣기
+        for (int i = 0; i < (itemCount/3); i++)
+        {
+            weaponSprites[i] = ItemSprites[i];
+        }
+
+        // 방패 스프라이트 나눠넣기
+        for(int i = 0; i < (itemCount/3); i++)
+        {
+            shieldSprites[i] = ItemSprites[i + 3];
+        }
+
+        // 갑옷 스프라이트 나눠넣기
+        for (int i = 0; i < (itemCount / 3); i++)
+        {
+            armorSprites[i] = ItemSprites[i + 6];
+        }
+
+
+        /// 저장된 데이터에서 장비 정보를 가져온다.
         weaponIdx = PlayerPrefs.GetInt("Weapon", 0);
         shieldIdx = PlayerPrefs.GetInt("Shield", 0);
         armorIdx = PlayerPrefs.GetInt("Armor", 0);
 
-        weaponImage.sprite = ItemSprites[weaponIdx];
-        shieldImage.sprite = ItemSprites[shieldIdx + 3];
-        armorImage.sprite = ItemSprites[armorIdx + 6];
+
+        /// 데이터가 잘못되었을 때의 에러 처리. 0번 아이템으로 돌려버린다.
+        /// 
+        if (weaponIdx > 3)
+            weaponIdx = 0;
+
+        if (shieldIdx > 3)
+            shieldIdx = 0;
+
+        if (armorIdx > 3)
+            armorIdx = 0;
+        /// ============================================================
+
+
+        weaponImage.sprite = weaponSprites[weaponIdx];
+        shieldImage.sprite = shieldSprites[shieldIdx];
+        armorImage.sprite = armorSprites[armorIdx];
 
         weaponName.text = weaponNames[weaponIdx];
         shieldName.text = shieldNames[shieldIdx];
         armorName.text = armorNames[armorIdx];
 
-        n_myPoint = PlayerPrefs.GetInt("Point", 0);
-        myPoint.text = string.Format("{0:N0}", n_myPoint) + " pt";
+
+        /// 저장된 데이터에서 포인트 정보와 누적된 훈련 스택을 가져온다.
+        n_myPoint = PlayerPrefs.GetInt("Point", 100);
+        textMyPoints.text = string.Format("{0:N0}", n_myPoint) + " pt";
 
         trainingStack = PlayerPrefs.GetInt("TrainingStack", 0);
 
     }
     public float GetBattleSuccesssRate()
     {
-        // 수련 누적치에 따른 전투 성공률 (최대 5회)
-        // 수련 1회당 4% 증가. (최대 20%)
-        // 수련 누적치는 전투 시 증발.
-
-        // 장비의 전투 성공값
-        // 하급셋 = 0 + 3 + 6 = 9
-        // 중급셋 = 1 + 4 + 7 = 12
-        // 상급셋 = 2 + 5 + 8 = 15
-
-        // 전투 성공률 공식
-        // 수련 누적치 + 장비셋 성공값 총합 * 보정 상수 = 전투 성공률 (MAX 80%)
-        // 승리 시 대승리는 10% 확률
-        float winRate = 0f;
-        winRate += trainingStack * 400;
-        winRate += (weaponIdx) * 400;
-        winRate += (shieldIdx + 3) * 400;
-        winRate += (armorIdx + 6) * 400;
-
-        Debug.Log($"GetBattleSuccesssRate: {winRate}");
-        return winRate;
+        return battleSuccessRate;
     }
 
     public float GetTrainingSuccessRate()
     {
         return trainingSuccessRate;
     }
+
+    public float GetBaseBattleSuccesssRate()
+    {
+        return baseBattleSuccessRate;
+    }
+
+    public float GetBaseTrainingSuccessRate()
+    {
+        return baseTrainingSuccessRate;
+    }
+
+
     public int GetTrainingStack()
     {
         return trainingStack;
@@ -122,7 +172,7 @@ public class GameManager : MonoBehaviour
 
     void UpdatePointText()
     {
-        myPoint.text = string.Format("{0:N0}", n_myPoint) + " pt";
+        textMyPoints.text = string.Format("{0:N0}", n_myPoint) + " pt";
     }
 
     public void ShowTrainingPopup()
@@ -130,6 +180,8 @@ public class GameManager : MonoBehaviour
         SaveData();
         GameObject k = Instantiate(popupTraining);
         k.transform.SetParent(MainScreen.transform);
+
+        SM.PlaySFX("Click");
     }
 
     public void ShowBattlePopup()
@@ -137,6 +189,9 @@ public class GameManager : MonoBehaviour
         SaveData();
         GameObject k = Instantiate(popupBattle);
         k.transform.SetParent(MainScreen.transform);
+
+        SM.PlaySFX("Click");
+
     }
 
     public void ShowTrainingFail()
@@ -150,6 +205,8 @@ public class GameManager : MonoBehaviour
         rt.localScale = Vector3.one;
 
         k.GetComponentInChildren<Button>().onClick.AddListener(()=>ClosePopUpButton(k));
+
+        SM.PlaySFX("Fail");
     }
 
     public void ShowTrainingSuccess()
@@ -166,9 +223,10 @@ public class GameManager : MonoBehaviour
         
         trainingStack++;
         if (trainingStack >= 5)
-            trainingStack = 4;
+            trainingStack = 5;
 
-        AddPoint(10);
+        SM.PlaySFX("Success");
+        AddPoint(trainingReward);
     }
 
     public void ShowTrainingGreatSuccess()
@@ -187,7 +245,8 @@ public class GameManager : MonoBehaviour
         if (trainingStack >= 5)
             trainingStack = 4;
 
-        AddPoint(20);
+        SM.PlaySFX("GreatSuccess");
+        AddPoint(trainingReward*2);
     }
 
     public void ShowBattleFail()
@@ -202,6 +261,7 @@ public class GameManager : MonoBehaviour
 
         k.GetComponentInChildren<Button>().onClick.AddListener(() => ClosePopUpButton(k));
         trainingStack = 0;
+        SM.PlaySFX("Fail");
     }
 
     public void ShowBattleSuccess()
@@ -216,8 +276,9 @@ public class GameManager : MonoBehaviour
 
         k.GetComponentInChildren<Button>().onClick.AddListener(() => ClosePopUpButton(k));
 
-        trainingStack = 0; 
-        AddPoint(10);
+        trainingStack = 0;
+        SM.PlaySFX("Success");
+        AddPoint(battleReward);
     }
 
     public void ShowBattleGreatSuccess()
@@ -233,7 +294,8 @@ public class GameManager : MonoBehaviour
         k.GetComponentInChildren<Button>().onClick.AddListener(() => ClosePopUpButton(k));
 
         trainingStack = 0;
-        AddPoint(20);
+        SM.PlaySFX("GreatSuccess");
+        AddPoint(battleReward*2);
     }
 
     public void ShowShop()
@@ -246,6 +308,9 @@ public class GameManager : MonoBehaviour
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;       // right, top
         rt.localScale = Vector3.one;
+
+
+        SM.PlaySFX("Shop");
 
     }
 
@@ -274,6 +339,23 @@ public class GameManager : MonoBehaviour
         return trainingTimerMax;
     }
 
+
+    public void UpdateRates()
+    {
+        // 수련 성공률 = 기본 성공률 + 장비 단계 * 5%
+        // 1000 = 10%
+        trainingSuccessRate = baseTrainingSuccessRate 
+            + (weaponIdx + shieldIdx + armorIdx + 3) * trainingSuccessRatePerGear;
+        
+
+
+
+        // 전투 성공률 = 기본 성공률 25% + 수련 스택 당 5% + 장비 당 3.5%
+        // 100 = 1%
+        battleSuccessRate = baseBattleSuccessRate 
+            + trainingStack * battleSuccessRatePerTrainingStack 
+            + (weaponIdx + shieldIdx + armorIdx + 3) * battleSuccessRatePerGear;
+    }
     public void QuitGame()
     {
 #if UNITY_EDITOR
@@ -293,9 +375,9 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("Point", n_myPoint);
         PlayerPrefs.SetInt("TrainingStack", trainingStack);
-        PlayerPrefs.SetInt("Weapon", weaponIdx);
-        PlayerPrefs.SetInt("Shield", shieldIdx);
-        PlayerPrefs.SetInt("Armor", armorIdx);
+        PlayerPrefs.SetInt("Weapon", weaponIdx > 3 ? 0 : weaponIdx);
+        PlayerPrefs.SetInt("Shield", shieldIdx > 3 ? 0 : shieldIdx);
+        PlayerPrefs.SetInt("Armor", armorIdx > 3 ? 0 : armorIdx);
 
     }
 
@@ -308,13 +390,85 @@ public class GameManager : MonoBehaviour
     
     private void LateUpdate()
     {
-        for (int i = 0; i <= trainingStackIcons.Length-1; i++)
+        for (int i = 0; i < trainingStackIcons.Length; i++)
         {
             if (i < trainingStack)
                 trainingStackIcons[i].GetComponent<Image>().color = new Color(trainingStackIcons[i].GetComponent<Image>().color.r, trainingStackIcons[i].GetComponent<Image>().color.g, trainingStackIcons[i].GetComponent<Image>().color.b, 1);
             else
                 trainingStackIcons[i].GetComponent<Image>().color = new Color(trainingStackIcons[i].GetComponent<Image>().color.r, trainingStackIcons[i].GetComponent<Image>().color.g, trainingStackIcons[i].GetComponent<Image>().color.b, 0);
         }
+
+        weaponImage.sprite = weaponSprites[weaponIdx];
+        shieldImage.sprite = shieldSprites[shieldIdx];
+        armorImage.sprite = armorSprites[armorIdx];
+
+        weaponName.text = weaponNames[weaponIdx];
+        shieldName.text = shieldNames[shieldIdx];
+        armorName.text = armorNames[armorIdx];
+        UpdatePointText();
+        UpdateRates();
     }
 
+    public bool CheckBuyItem(int _id, int _price)
+    {
+        Debug.Log($"CheckBuyItem: Args- _price == {_price}, _id == {_id}");
+
+        if (_price <= n_myPoint)
+        {
+            if (_id < 3) // 무기
+            {
+                weaponIdx = _id;
+                weaponImage.sprite = weaponSprites[_id];
+                weaponName.text = weaponNames[_id];
+            }
+            else if (_id < 6) // 방패
+            {
+                shieldIdx = _id-3;
+                shieldImage.sprite = shieldSprites[_id - 3];
+                shieldName.text = shieldNames[_id - 3];
+            }
+            else // 갑옷
+            {
+                armorIdx = _id-6;
+                armorImage.sprite = armorSprites[_id - 6];
+                armorName.text = armorNames[_id - 6];
+            }
+
+            n_myPoint -= _price;
+
+            Debug.Log($"Item Buy Check Successful!");
+
+            SM.PlaySFX("BuySuccess");
+            return true;
+        }
+        else
+        {
+            Debug.Log("Item Buy Check Failed! - Not enough Points: price {_price} / on hand {n_myPoint}");
+
+            SM.PlaySFX("BuyFail");
+            return false;
+        }
+
+    }
+
+
+    public string GetItemName(int _i)
+    {
+        if (_i < 3)
+            return weaponNames[_i];
+        else if (_i < 6)
+            return shieldNames[_i-3];
+        else
+            return armorNames[_i-6];
+    }
+
+    public Sprite GetItemSprite(int _i)
+    {
+        return ItemSprites[_i];
+    }
+
+    public int GetItemPrice(int _i)
+    {
+        return 10 * (_i % 3 == 0 ? 1 : (_i % 3 == 1 ? 10 : 100));
+    }
 }
