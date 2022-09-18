@@ -31,8 +31,8 @@ public class Battle : MonoBehaviour
 
         btnAbort.onClick.AddListener(() => GameManager.Instance.AbortBattle(gameObject));
 
-        successRate = GameManager.Instance.GetBattleSuccesssRate();
-        baseSuccessRate = GameManager.Instance.GetBaseBattleSuccesssRate();
+        successRate = GameManager.Instance.GetBattleSuccessRate();
+        baseSuccessRate = GameManager.Instance.GetBaseBattleSuccessRate();
     }
 
     private void FixedUpdate()

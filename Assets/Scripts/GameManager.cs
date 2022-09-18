@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
         trainingStack = PlayerPrefs.GetInt("TrainingStack", 0);
 
     }
-    public float GetBattleSuccesssRate()
+    public float GetBattleSuccessRate()
     {
         return battleSuccessRate;
     }
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
         return trainingSuccessRate;
     }
 
-    public float GetBaseBattleSuccesssRate()
+    public float GetBaseBattleSuccessRate()
     {
         return baseBattleSuccessRate;
     }
@@ -470,5 +470,24 @@ public class GameManager : MonoBehaviour
     public int GetItemPrice(int _i)
     {
         return 10 * (_i % 3 == 0 ? 1 : (_i % 3 == 1 ? 10 : 100));
+    }
+
+    public int GetRewardPoint(bool _isBattle, bool _isGreatSuccess)
+    {
+        if (_isBattle)
+        {
+            if (_isGreatSuccess)
+                return battleReward * 2;
+            else
+                return battleReward;
+
+        }
+        else
+        {
+            if (_isGreatSuccess)
+                return trainingReward * 2;
+            else
+                return trainingReward;
+        }
     }
 }

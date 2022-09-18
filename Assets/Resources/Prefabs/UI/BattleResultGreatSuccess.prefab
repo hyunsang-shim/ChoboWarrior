@@ -291,6 +291,7 @@ GameObject:
   - component: {fileID: 5067038480063151899}
   - component: {fileID: 278895298351537525}
   - component: {fileID: 1745777242600789468}
+  - component: {fileID: 6072060705665217998}
   m_Layer: 5
   m_Name: BattleResultGreatSuccess
   m_TagString: Untagged
@@ -357,6 +358,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6072060705665217998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5417396877208396630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc33150e453b48b468ee08c4e91ec975, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  successComment: {fileID: 1223828470519338698}
+  comment: "\uC804\uD22C \uB300\uC2B9\uB9AC!!!\\n\\n{points} \uCF54\uC778\uC744 \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4."
+  isGreatSuccess: 1
+  isBattleSuccess: 1
 --- !u!1 &7434223487293472250
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,4 +453,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC804\uD22C \uB300\uC2B9\uB9AC!!!\n\n20 \uCF54\uC778\uC744 \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4."
+  m_Text: "\uC804\uD22C \uB300\uC2B9\uB9AC!!!\n\n{points} \uCF54\uC778\uC744 \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4."
