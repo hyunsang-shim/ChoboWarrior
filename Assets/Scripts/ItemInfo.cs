@@ -17,6 +17,7 @@ public class ItemInfo : MonoBehaviour
     public Text txtItemName;
     public Text txtItemPrice;
 
+
     private void Awake()
     {
         isSet = false;

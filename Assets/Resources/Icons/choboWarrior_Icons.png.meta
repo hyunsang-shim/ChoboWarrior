@@ -182,8 +182,8 @@ TextureImporter:
       name: choboWarrior_Icons_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
+        x: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -203,7 +203,7 @@ TextureImporter:
       name: choboWarrior_Icons_4
       rect:
         serializedVersion: 2
-        x: 32
+        x: 0
         y: 32
         width: 32
         height: 32
@@ -224,7 +224,7 @@ TextureImporter:
       name: choboWarrior_Icons_5
       rect:
         serializedVersion: 2
-        x: 64
+        x: 32
         y: 32
         width: 32
         height: 32
@@ -245,8 +245,8 @@ TextureImporter:
       name: choboWarrior_Icons_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 64
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -266,8 +266,8 @@ TextureImporter:
       name: choboWarrior_Icons_7
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
+        x: 96
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -287,7 +287,7 @@ TextureImporter:
       name: choboWarrior_Icons_8
       rect:
         serializedVersion: 2
-        x: 64
+        x: 0
         y: 0
         width: 32
         height: 32
@@ -304,6 +304,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: choboWarrior_Icons_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ad15def841c4f649a7e434dbf71ab44
+      internalID: -1050252373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: choboWarrior_Icons_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cdf3928069b0e849b5751b51c39e05f
+      internalID: -944045668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: choboWarrior_Icons_11
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0eaa46a9dfadce341adf4498db4130e5
+      internalID: 981029189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -315,12 +378,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      choboWarrior_Icons_11: 981029189
       choboWarrior_Icons_1: 1205601881
       choboWarrior_Icons_7: 2142507730
+      choboWarrior_Icons_10: -944045668
       choboWarrior_Icons_4: 1811113258
       choboWarrior_Icons_8: -637657172
       choboWarrior_Icons_2: 152341172
       choboWarrior_Icons_0: -262967032
+      choboWarrior_Icons_9: -1050252373
       choboWarrior_Icons_5: 53132682
       choboWarrior_Icons_3: -1967492096
       choboWarrior_Icons_6: -972523183

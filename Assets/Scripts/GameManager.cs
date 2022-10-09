@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     public Sprite[] weaponSprites, shieldSprites, armorSprites;
     public GameObject[] trainingStackIcons;
     public int itemCount = 0;
+    public int weaponDur_Max, weaponDur_Cur;
+    public int armorDur_Max, armorDur_Cur;
+    public int shieldDur_Max, shieldDur_Cur;
+    public Slider weaponDurSlider, armorDurSlider, shieldDurSlider;
 
     [Header("저장 데이터")]
     public int n_myPoint;
@@ -20,10 +24,11 @@ public class GameManager : MonoBehaviour
     public int weaponIdx, shieldIdx, armorIdx;
 
     [Header("데이터베이스")]   
-    string[] weaponNames = { "싸구려 검", "좋은 검", "최강의 검" };
-    string[] shieldNames = { "싸구려 방패", "좋은 방패", "최강의 방패" };
-    string[] armorNames = { "싸구려 갑옷", "좋은 갑옷", "최강의 갑옷" };
-
+    string[] weaponNames = { "없음", "싸구려 검", "좋은 검", "최강의 검" };
+    string[] shieldNames = { "없음", "싸구려 방패", "좋은 방패", "최강의 방패" };
+    string[] armorNames = { "없음", "싸구려 갑옷", "좋은 갑옷", "최강의 갑옷" };
+    int[] gearDurablities = { 0, 5, 8, 15 };
+    
     [Header("설정값들")]
     public int battleTimerMax;
     public int trainingTimerMax;
@@ -80,26 +85,26 @@ public class GameManager : MonoBehaviour
         itemCount = ItemSprites.Length;
 
 
-        weaponSprites = new Sprite[3];
-        shieldSprites = new Sprite[3];
-        armorSprites = new Sprite[3];
+        weaponSprites = new Sprite[4];
+        shieldSprites = new Sprite[4];
+        armorSprites = new Sprite[4];
 
         // 무기 스프라이트 나눠넣기
-        for (int i = 0; i < (itemCount/3); i++)
+        for (int i = 0; i < (itemCount/4); i++)
         {
             weaponSprites[i] = ItemSprites[i];
         }
 
         // 방패 스프라이트 나눠넣기
-        for(int i = 0; i < (itemCount/3); i++)
+        for(int i = 0; i < (itemCount/4); i++)
         {
-            shieldSprites[i] = ItemSprites[i + 3];
+            shieldSprites[i] = ItemSprites[i + 4];
         }
 
         // 갑옷 스프라이트 나눠넣기
-        for (int i = 0; i < (itemCount / 3); i++)
+        for (int i = 0; i < (itemCount / 4); i++)
         {
-            armorSprites[i] = ItemSprites[i + 6];
+            armorSprites[i] = ItemSprites[i + 8];
         }
 
 
@@ -111,13 +116,13 @@ public class GameManager : MonoBehaviour
 
         /// 데이터가 잘못되었을 때의 에러 처리. 0번 아이템으로 돌려버린다.
         /// 
-        if (weaponIdx > 3)
+        if (weaponIdx > 4)
             weaponIdx = 0;
 
-        if (shieldIdx > 3)
+        if (shieldIdx > 4)
             shieldIdx = 0;
 
-        if (armorIdx > 3)
+        if (armorIdx > 4)
             armorIdx = 0;
         /// ============================================================
 
@@ -135,7 +140,24 @@ public class GameManager : MonoBehaviour
         n_myPoint = PlayerPrefs.GetInt("Point", 100);
         textMyPoints.text = string.Format("{0:N0}", n_myPoint) + " pt";
 
-        trainingStack = PlayerPrefs.GetInt("TrainingStack", 0);
+        trainingStack = PlayerPrefs.GetInt("TrainingStack", 1);
+
+        weaponDur_Cur = PlayerPrefs.GetInt("WeaponDur_Cur", 1);
+        armorDur_Cur = PlayerPrefs.GetInt("ArmorDur_Cur", 1);
+        shieldDur_Cur = PlayerPrefs.GetInt("ShieldDur_Cur", 1);
+
+        weaponDur_Max = PlayerPrefs.GetInt("WeaponDur_Max", 1);
+        armorDur_Max= PlayerPrefs.GetInt("ArmorDur_Max", 1);
+        shieldDur_Max = PlayerPrefs.GetInt("ShieldDur_Max", 1);
+
+        weaponDurSlider.maxValue = weaponDur_Max;
+        shieldDurSlider.maxValue = weaponDur_Max;
+        armorDurSlider.maxValue = weaponDur_Max;
+
+        weaponDurSlider.value = weaponDur_Cur;
+        shieldDurSlider.value = shieldDur_Cur;
+        armorDurSlider.value = armorDur_Cur;
+
 
     }
     public float GetBattleSuccessRate()
@@ -262,6 +284,47 @@ public class GameManager : MonoBehaviour
         k.GetComponentInChildren<Button>().onClick.AddListener(() => ClosePopUpButton(k));
         trainingStack = 0;
         SM.PlaySFX("Fail");
+
+        int p = Random.Range(0, 10000);
+        if(p > 3500)
+        { 
+            switch(p%3)
+            {
+                case 0:
+                    weaponDur_Cur--;
+                    if (weaponDur_Cur < 1)
+                    {
+                        weaponName.text = "없음";
+                        weaponImage.sprite = null;
+                        weaponDur_Cur = 0;
+                        weaponDur_Max = 1;
+                        weaponIdx = 0;
+                    }
+                    break;
+                case 1:
+                    shieldDur_Cur--;
+                    if (shieldDur_Cur < 1)
+                    {
+                        shieldName.text = "없음";
+                        shieldImage.sprite = null;
+                        shieldDur_Cur = 0;
+                        shieldDur_Max = 1;
+                        shieldIdx = 0;
+                    }
+                    break;
+                case 2:
+                    armorDur_Cur--;
+                    if(armorDur_Cur < 1)
+                    {
+                        armorName.text = "없음";
+                        armorImage.sprite = null;
+                        armorDur_Cur = 0;
+                        armorDur_Max = 1;
+                        armorIdx = 0;
+                    }
+                    break;
+            }
+                }
     }
 
     public void ShowBattleSuccess()
@@ -376,8 +439,14 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("Point", n_myPoint);
         PlayerPrefs.SetInt("TrainingStack", trainingStack);
         PlayerPrefs.SetInt("Weapon", weaponIdx > 3 ? 0 : weaponIdx);
+        PlayerPrefs.SetInt("WeaponDur_Cur", weaponDur_Cur);
+        PlayerPrefs.SetInt("WeaponDur_Max", weaponDur_Max);
         PlayerPrefs.SetInt("Shield", shieldIdx > 3 ? 0 : shieldIdx);
+        PlayerPrefs.SetInt("ShieldDur_Cur",shieldDur_Cur);
+        PlayerPrefs.SetInt("ShieldDur_Max",shieldDur_Max);
         PlayerPrefs.SetInt("Armor", armorIdx > 3 ? 0 : armorIdx);
+        PlayerPrefs.SetInt("ArmorDur_Cur", shieldDur_Cur);
+        PlayerPrefs.SetInt("ArmorDur_Max", shieldDur_Max);
 
     }
 
@@ -405,6 +474,16 @@ public class GameManager : MonoBehaviour
         weaponName.text = weaponNames[weaponIdx];
         shieldName.text = shieldNames[shieldIdx];
         armorName.text = armorNames[armorIdx];
+
+        weaponDurSlider.value = weaponDur_Cur;
+        weaponDurSlider.maxValue = weaponDur_Max;
+
+        shieldDurSlider.value = shieldDur_Cur;
+        shieldDurSlider.maxValue = shieldDur_Max;
+
+        armorDurSlider.value = armorDur_Cur;
+        armorDurSlider.maxValue = armorDur_Max;
+
         UpdatePointText();
         UpdateRates();
     }
@@ -471,7 +550,7 @@ public class GameManager : MonoBehaviour
     {
         return 10 * (_i % 3 == 0 ? 1 : (_i % 3 == 1 ? 10 : 100));
     }
-
+    
     public int GetRewardPoint(bool _isBattle, bool _isGreatSuccess)
     {
         if (_isBattle)

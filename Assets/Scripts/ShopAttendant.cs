@@ -129,20 +129,20 @@ public class ShopAttendant : MonoBehaviour
         myPoints = GameManager.Instance.GetCurrentPoint();
         int _count = GameManager.Instance.itemCount;
         Transform trans_Child;
-        for (int i = 0; i < itemList.transform.childCount; i++)
+        for (int i = 1; i < itemList.transform.childCount; i++)
         {
-            trans_Child = itemList.transform.GetChild(i);
+            trans_Child = itemList.transform.GetChild(i-1);
             trans_Child.GetComponent<ItemInfo>().itemId = i;
             trans_Child.GetComponent<ItemInfo>().isSet = false;
             trans_Child.GetComponent<ItemInfo>().isSold = false;
             trans_Child.transform.SetParent(itemList.transform);
 
 
-            if (((i == GameManager.Instance.weaponIdx) && i < 3)
-                || ((i == GameManager.Instance.shieldIdx + 3) && i < 6)
-                || ((i == GameManager.Instance.armorIdx + 6) && i < 9))
+            if (((i-1 == GameManager.Instance.weaponIdx) && i < 4)
+                || ((i-1 == GameManager.Instance.shieldIdx + 4) && i < 8)
+                || ((i-1 == GameManager.Instance.armorIdx + 8) && i < 11))
             {
-                itemList.transform.GetChild(i).GetComponent<ItemInfo>().isSold = true;
+                itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
                 trans_Child.GetComponent<ItemInfo>().isSet = false;
                 isItemSelected = false;
             }
@@ -158,7 +158,7 @@ public class ShopAttendant : MonoBehaviour
 
         int _count = GameManager.Instance.itemCount;
 
-        for (int i = 0; i < _count; i++)
+        for (int i = 1; i < _count; i++)
         {
             GameObject o = Instantiate(Resources.Load<GameObject>("Prefabs/UI/ItemInfo"));
             o.GetComponent<ItemInfo>().SetShopAttendant(gameObject.GetComponent<ShopAttendant>());
@@ -168,14 +168,14 @@ public class ShopAttendant : MonoBehaviour
             o.transform.SetParent(itemList.transform);
             o.GetComponent<ItemInfo>().SetItemInfo(i);
 
-            if ((i == GameManager.Instance.weaponIdx) && i < 3)
-                itemList.transform.GetChild(i).GetComponent<ItemInfo>().isSold = true;
+            if ((i == GameManager.Instance.weaponIdx) && i < 4)
+                itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
 
-            if ((i == GameManager.Instance.shieldIdx + 3) && i < 6)
-                itemList.transform.GetChild(i).GetComponent<ItemInfo>().isSold = true;
+            if ((i == GameManager.Instance.shieldIdx + 4) && i < 8)
+                itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
 
-            if ((i == GameManager.Instance.armorIdx + 6) && i < 9)
-                itemList.transform.GetChild(i).GetComponent<ItemInfo>().isSold = true;
+            if ((i == GameManager.Instance.armorIdx + 8) && i < 11)
+                itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
 
 
 
