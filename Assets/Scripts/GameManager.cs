@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -76,7 +78,18 @@ public class GameManager : MonoBehaviour
 
 
     void InitData()
-    {   
+    {
+        //TextAsset tmp = Resources.Load("Data/Gears") as TextAsset;
+        //StringReader sr = new StringReader(tmp.text);
+
+        //Sprite[] _w = Resources.LoadAll<Sprite>("Icons/WeaponIcons");
+        //Sprite[] _a = Resources.LoadAll<Sprite>("Icons/ArmorIcons");
+        //Sprite[] _s = Resources.LoadAll<Sprite>("Icons/ShieldIcons");
+
+
+
+
+
         ItemSprites.Initialize();
 
         /// 전체 아이템 스프라이트를 각각의 장비 스프라이트로 나눠서 넣는다.
