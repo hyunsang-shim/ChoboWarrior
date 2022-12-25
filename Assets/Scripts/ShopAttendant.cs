@@ -140,7 +140,7 @@ public class ShopAttendant : MonoBehaviour
 
             if (((i-1 == GameManager.Instance.weaponIdx) && i < 4)
                 || ((i-1 == GameManager.Instance.shieldIdx + 4) && i < 8)
-                || ((i-1 == GameManager.Instance.armorIdx + 8) && i < 11))
+                || ((i-1 == GameManager.Instance.armorIdx + 8) && i <= 11))
             {
                 itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
                 trans_Child.GetComponent<ItemInfo>().isSet = false;
@@ -157,6 +157,7 @@ public class ShopAttendant : MonoBehaviour
 
 
         int _count = GameManager.Instance.itemCount;
+        Debug.Log("Item Count: " + _count.ToString());
 
         for (int i = 1; i < _count; i++)
         {
@@ -168,13 +169,17 @@ public class ShopAttendant : MonoBehaviour
             o.transform.SetParent(itemList.transform);
             o.GetComponent<ItemInfo>().SetItemInfo(i);
 
-            if ((i == GameManager.Instance.weaponIdx) && i < 4)
+            Debug.Log("WeaponIndex: " + GameManager.Instance.weaponIdx.ToString()
+                + " ShieldIndex: " + GameManager.Instance.shieldIdx.ToString()
+                + " ArmorIndex: " + GameManager.Instance.armorIdx.ToString());
+           
+                if ((i == GameManager.Instance.weaponIdx) && i < 4)
                 itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
 
             if ((i == GameManager.Instance.shieldIdx + 4) && i < 8)
                 itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
 
-            if ((i == GameManager.Instance.armorIdx + 8) && i < 11)
+            if ((i == GameManager.Instance.armorIdx + 8) && i <= 11)
                 itemList.transform.GetChild(i-1).GetComponent<ItemInfo>().isSold = true;
 
 

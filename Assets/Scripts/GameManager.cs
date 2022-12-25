@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
     string[] weaponNames = { "없음", "싸구려 검", "좋은 검", "최강의 검" };
     string[] shieldNames = { "없음", "싸구려 방패", "좋은 방패", "최강의 방패" };
     string[] armorNames = { "없음", "싸구려 갑옷", "좋은 갑옷", "최강의 갑옷" };
-    int[] gearDurablities = { 0, 5, 8, 15 };
     
     [Header("설정값들")]
     public int battleTimerMax;
@@ -103,19 +102,19 @@ public class GameManager : MonoBehaviour
         armorSprites = new Sprite[4];
 
         // 무기 스프라이트 나눠넣기
-        for (int i = 0; i < (itemCount/4); i++)
+        for (int i = 0; i <= (itemCount/4); i++)
         {
             weaponSprites[i] = ItemSprites[i];
         }
 
         // 방패 스프라이트 나눠넣기
-        for(int i = 0; i < (itemCount/4); i++)
+        for(int i = 0; i <= (itemCount/4); i++)
         {
             shieldSprites[i] = ItemSprites[i + 4];
         }
 
         // 갑옷 스프라이트 나눠넣기
-        for (int i = 0; i < (itemCount / 4); i++)
+        for (int i = 0; i <= (itemCount / 4); i++)
         {
             armorSprites[i] = ItemSprites[i + 8];
         }
@@ -390,30 +389,12 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void ClosePopUpButton(GameObject _o)
-    {
-        SaveData();
-        Destroy(_o);
-    }
+    public void ClosePopUpButton(GameObject _o) { SaveData(); Destroy(_o); }
    
-    public void AbortTraining(GameObject _o)
-    {
-        Destroy(_o);
-    }
-    
-    public void AbortBattle(GameObject _o)
-    {
-        Destroy(_o);
-    }
-
-    public int GetBattleTimerMax()
-    {
-        return battleTimerMax;
-    }
-    public int GetTrainingTimerMax()
-    {
-        return trainingTimerMax;
-    }
+    public void AbortTraining(GameObject _o) { Destroy(_o); }
+    public void AbortBattle(GameObject _o) { Destroy(_o); }
+    public int GetBattleTimerMax() { return battleTimerMax; }
+    public int GetTrainingTimerMax() { return trainingTimerMax; }
 
 
     public void UpdateRates()
@@ -442,10 +423,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void OnApplicationQuit()
-    {
-        SaveData();
-    }
+    private void OnApplicationQuit() { SaveData(); }
 
     public void SaveData()
     {
@@ -507,23 +485,31 @@ public class GameManager : MonoBehaviour
 
         if (_price <= n_myPoint)
         {
-            if (_id < 3) // 무기
+            if (_id <= 3) // 무기
             {
                 weaponIdx = _id;
                 weaponImage.sprite = weaponSprites[_id];
                 weaponName.text = weaponNames[_id];
+                weaponDur_Max = (weaponIdx + 1) * 3 + 3;
+                weaponDur_Cur = weaponDur_Max;
             }
-            else if (_id < 6) // 방패
+            else if (_id <= 6) // 방패
             {
                 shieldIdx = _id-3;
                 shieldImage.sprite = shieldSprites[_id - 3];
                 shieldName.text = shieldNames[_id - 3];
+                shieldDur_Max = (weaponIdx + 1) * 3;
+                shieldDur_Cur = shieldDur_Max;
+
+
             }
             else // 갑옷
             {
                 armorIdx = _id-6;
                 armorImage.sprite = armorSprites[_id - 6];
                 armorName.text = armorNames[_id - 6];
+                armorDur_Max = (weaponIdx + 1) * 3;
+                armorDur_Cur = armorDur_Max;
             }
 
             n_myPoint -= _price;
@@ -546,12 +532,13 @@ public class GameManager : MonoBehaviour
 
     public string GetItemName(int _i)
     {
-        if (_i < 3)
+        Debug.Log($"Retriving Item Name: index- {_i}");
+        if (_i <= 3)
             return weaponNames[_i];
-        else if (_i < 6)
-            return shieldNames[_i-3];
+        else if (_i < 8)
+            return shieldNames[_i-4];
         else
-            return armorNames[_i-6];
+            return armorNames[_i-8];
     }
 
     public Sprite GetItemSprite(int _i)
