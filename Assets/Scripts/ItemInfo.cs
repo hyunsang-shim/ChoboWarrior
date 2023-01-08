@@ -68,16 +68,16 @@ public class ItemInfo : MonoBehaviour
         attendant = _ref;
     }
 
-    public void SetItemInfo(int _i)
+    public void SetItemInfo(int _i, string _itemType)
     {
-        Debug.Log($"Trying to get Item Info {_i}");
+//        Debug.Log($"Trying to get Item Info {_i}");
         
 
-        itemSprite.sprite = GameManager.Instance.GetItemSprite(_i);
-        itemName = GameManager.Instance.GetItemName(_i);
-        itemPrice = GameManager.Instance.GetItemPrice(_i);
+        itemSprite.sprite = GameManager.Instance.GetItemSprite(_i, _itemType);
+        itemName = GameManager.Instance.GetItemName(_i, _itemType);
+        itemPrice = GameManager.Instance.GetItemPrice(_i, _itemType);
 
-        Debug.Log($"Item Info {_i} set successfuly");
+//        Debug.Log($"Item Info {_i} set successfuly");
     }
 
 }

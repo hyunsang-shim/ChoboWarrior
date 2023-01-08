@@ -159,7 +159,7 @@ public class ShopAttendant : MonoBehaviour
         int _count = GameManager.Instance.itemCount;
         Debug.Log("Item Count: " + _count.ToString());
 
-        for (int i = 1; i < _count; i++)
+        for (int i = 0; i < _count; i++)
         {
             GameObject o = Instantiate(Resources.Load<GameObject>("Prefabs/UI/ItemInfo"));
             o.GetComponent<ItemInfo>().SetShopAttendant(gameObject.GetComponent<ShopAttendant>());

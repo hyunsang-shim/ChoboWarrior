@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public int weaponDur_Max, weaponDur_Cur;
     public int armorDur_Max, armorDur_Cur;
     public int shieldDur_Max, shieldDur_Cur;
+    public int shopWeaponCount, shopArmorCount, shopShieldCount;
     public Slider weaponDurSlider, armorDurSlider, shieldDurSlider;
 
     [Header("저장 데이터")]
@@ -81,9 +82,9 @@ public class GameManager : MonoBehaviour
         //TextAsset tmp = Resources.Load("Data/Gears") as TextAsset;
         //StringReader sr = new StringReader(tmp.text);
 
-        //Sprite[] _w = Resources.LoadAll<Sprite>("Icons/WeaponIcons");
-        //Sprite[] _a = Resources.LoadAll<Sprite>("Icons/ArmorIcons");
-        //Sprite[] _s = Resources.LoadAll<Sprite>("Icons/ShieldIcons");
+        Sprite[] _w = Resources.LoadAll<Sprite>("Icons/WeaponIcons");
+        Sprite[] _a = Resources.LoadAll<Sprite>("Icons/ArmorIcons");
+        Sprite[] _s = Resources.LoadAll<Sprite>("Icons/ShieldIcons");
 
 
 
@@ -101,24 +102,31 @@ public class GameManager : MonoBehaviour
         shieldSprites = new Sprite[4];
         armorSprites = new Sprite[4];
 
-        // 무기 스프라이트 나눠넣기
-        for (int i = 0; i <= (itemCount/4); i++)
-        {
-            weaponSprites[i] = ItemSprites[i];
-        }
+        //// 무기 스프라이트 나눠넣기
+        //for (int i = 0; i <= (itemCount/4); i++)
+        //{
+        //    weaponSprites[i] = ItemSprites[i];
+        //}
 
-        // 방패 스프라이트 나눠넣기
-        for(int i = 0; i <= (itemCount/4); i++)
-        {
-            shieldSprites[i] = ItemSprites[i + 4];
-        }
+        //// 방패 스프라이트 나눠넣기
+        //for(int i = 0; i <= (itemCount/4); i++)
+        //{
+        //    shieldSprites[i] = ItemSprites[i + 4];
+        //}
 
-        // 갑옷 스프라이트 나눠넣기
-        for (int i = 0; i <= (itemCount / 4); i++)
-        {
-            armorSprites[i] = ItemSprites[i + 8];
-        }
+        //// 갑옷 스프라이트 나눠넣기
+        //for (int i = 0; i <= (itemCount / 4); i++)
+        //{
+        //    armorSprites[i] = ItemSprites[i + 8];
+        //}
 
+        weaponSprites = _w;
+        armorSprites = _a;
+        shieldSprites = _s;
+
+        shopWeaponCount = _w.Length;
+        shopArmorCount = _a.Length;
+        shopShieldCount =_s.Length;
 
         /// 저장된 데이터에서 장비 정보를 가져온다.
         weaponIdx = PlayerPrefs.GetInt("Weapon", 0);
@@ -429,13 +437,13 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("Point", n_myPoint);
         PlayerPrefs.SetInt("TrainingStack", trainingStack);
-        PlayerPrefs.SetInt("Weapon", weaponIdx > 3 ? 0 : weaponIdx);
+        PlayerPrefs.SetInt("Weapon", weaponIdx > weaponSprites.Length ? 0 : weaponIdx);
         PlayerPrefs.SetInt("WeaponDur_Cur", weaponDur_Cur);
         PlayerPrefs.SetInt("WeaponDur_Max", weaponDur_Max);
-        PlayerPrefs.SetInt("Shield", shieldIdx > 3 ? 0 : shieldIdx);
+        PlayerPrefs.SetInt("Shield", shieldIdx > shieldSprites.Length ? 0 : shieldIdx);
         PlayerPrefs.SetInt("ShieldDur_Cur",shieldDur_Cur);
         PlayerPrefs.SetInt("ShieldDur_Max",shieldDur_Max);
-        PlayerPrefs.SetInt("Armor", armorIdx > 3 ? 0 : armorIdx);
+        PlayerPrefs.SetInt("Armor", armorIdx > armorSprites.Length ? 0 : armorIdx);
         PlayerPrefs.SetInt("ArmorDur_Cur", shieldDur_Cur);
         PlayerPrefs.SetInt("ArmorDur_Max", shieldDur_Max);
 
@@ -530,20 +538,48 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public string GetItemName(int _i)
+    public string GetItemName(int _i, string _t)
     {
-        Debug.Log($"Retriving Item Name: index- {_i}");
-        if (_i <= 3)
+        //Debug.Log($"Retriving Item Name: index- {_i}");
+        //if (_i <= 3)
+        //    return weaponNames[_i];
+        //else if (_i < 8)
+        //    return shieldNames[_i-4];
+        //else
+        //    return armorNames[_i-8];
+
+        if (string.Equals(_t, "weapon"))
+        {
             return weaponNames[_i];
-        else if (_i < 8)
-            return shieldNames[_i-4];
+        }
+        else if (string.Equals(_t, "armor"))
+        {
+            return shieldNames[_i];
+        }
+        else if (string.Equals(_t, "shield"))
+        {
+            return armorNames[_i];
+        }
         else
-            return armorNames[_i-8];
+            return weaponNames[_i];
     }
 
-    public Sprite GetItemSprite(int _i)
+    public Sprite GetItemSprite(int _i, string _t)
     {
-        return ItemSprites[_i];
+        if (string.Equals(_t, "weapon"))
+        {
+            return weaponSprites[_i];
+        }
+        else if (string.Equals(_t, "armor"))
+        {
+            return armorSprites[_i];
+        }
+        else if (string.Equals(_t, "shield"))
+        {
+            return shieldSprites[_i];
+        }
+        else
+            return ItemSprites[0];
     }
 
     public int GetItemPrice(int _i)
