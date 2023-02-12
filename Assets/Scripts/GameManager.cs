@@ -582,7 +582,7 @@ public class GameManager : MonoBehaviour
             return ItemSprites[0];
     }
 
-    public int GetItemPrice(int _i)
+    public int GetItemPrice(int _i, string _type)
     {
         return 10 * (_i % 3 == 0 ? 1 : (_i % 3 == 1 ? 10 : 100));
     }

@@ -167,7 +167,7 @@ public class ShopAttendant : MonoBehaviour
             o.GetComponent<ItemInfo>().isSet = false;
             o.GetComponent<ItemInfo>().isSold = false;
             o.transform.SetParent(itemList.transform);
-            o.GetComponent<ItemInfo>().SetItemInfo(i);
+            o.GetComponent<ItemInfo>().SetItemInfo(i%4, _count > 3 ? (_count > 7 ? "shield" : "armor"): "weapon");
 
             Debug.Log("WeaponIndex: " + GameManager.Instance.weaponIdx.ToString()
                 + " ShieldIndex: " + GameManager.Instance.shieldIdx.ToString()
