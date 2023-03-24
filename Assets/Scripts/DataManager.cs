@@ -195,9 +195,9 @@ public class DataManager : MonoBehaviour
     {
         playerData = ReadPlayerData();
 
-        playerData.currentWeapon = Weapons[playerData.currentWeaponidx];
-        playerData.currentArmor = Weapons[playerData.currentArmoridx];
-        playerData.currentShield = Weapons[playerData.currentShieldidx];
+        playerData.currentWeapon = Weapons[playerData.currentWeaponidx +1];
+        playerData.currentArmor = Weapons[playerData.currentArmoridx +2];
+        playerData.currentShield = Weapons[playerData.currentShieldidx +3];
     }
 
     PlayerData ReadPlayerData()
