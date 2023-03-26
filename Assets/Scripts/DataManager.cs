@@ -45,9 +45,9 @@ public class DataManager : MonoBehaviour
     public Sprite[] armorSprites;
     public Sprite[] shieldSprites;
 
-    List<ItemData> Weapons = new List<ItemData>();
-    List<ItemData> Armors = new List<ItemData>();
-    List<ItemData> Shields = new List<ItemData>();
+    public List<ItemData> Weapons = new List<ItemData>();
+    public List<ItemData> Armors = new List<ItemData>();
+    public List<ItemData> Shields = new List<ItemData>();
 
 
 
@@ -69,7 +69,6 @@ public class DataManager : MonoBehaviour
     {
         InitSpriteData();
         InitItemData();
-        InitPlayerData();
     }
 
 
@@ -191,16 +190,13 @@ public class DataManager : MonoBehaviour
         return list;
     }
 
-    public void InitPlayerData()
+    public void SetPlayerData(PlayerData _p)
     {
-        playerData = ReadPlayerData();
 
-        playerData.currentWeapon = Weapons[playerData.currentWeaponidx +1];
-        playerData.currentArmor = Weapons[playerData.currentArmoridx +2];
-        playerData.currentShield = Weapons[playerData.currentShieldidx +3];
+        playerData = _p;
     }
 
-    PlayerData ReadPlayerData()
+    public PlayerData ReadPlayerData()
     {
         PlayerData _p = new PlayerData();
         _p.playerName = PlayerPrefs.GetString("PlayerName", "Ω…¡ˆ»Ø");
