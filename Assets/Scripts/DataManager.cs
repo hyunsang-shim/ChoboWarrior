@@ -49,8 +49,12 @@ public class DataManager : MonoBehaviour
     public List<ItemData> Armors = new List<ItemData>();
     public List<ItemData> Shields = new List<ItemData>();
 
+#if UNITY_EDITOR
 
+    public int Debug_currentGold;
+    public bool Debug_OverrideCurrentGold;
 
+#endif
 
     private static DataManager sInstance;
     public static DataManager Instance
@@ -89,9 +93,9 @@ public class DataManager : MonoBehaviour
         armorSprites = Resources.LoadAll<Sprite>("Icons/ArmorIcons");
         shieldSprites = Resources.LoadAll<Sprite>("Icons/ShieldIcons");
 
-        Debug.Log($"Sprite Data Initialize Successful. {weaponSprites.Length} weapon sprite(s), " +
-            $"{armorSprites.Length} armor sprite(s) and {shieldSprites.Length} " +
-            $"shield sprite(s) loaded.");
+      //  Debug.Log($"Sprite Data Initialize Successful. {weaponSprites.Length} weapon sprite(s), " +
+      //      $"{armorSprites.Length} armor sprite(s) and {shieldSprites.Length} " +
+      //      $"shield sprite(s) loaded.");
     }
 
     public void InitItemData()
@@ -120,7 +124,7 @@ public class DataManager : MonoBehaviour
 
         }
 
-        Debug.Log($"itemDB Initialized Successfully : {itemDB.Count} items");
+        // Debug.Log($"itemDB Initialized Successfully : {itemDB.Count} items");        
     }
 
     public static List<ItemData> ReadDB(string _f = "DB/Items")
@@ -194,6 +198,19 @@ public class DataManager : MonoBehaviour
     {
 
         playerData = _p;
+
+
+        //DEbug Purpose only;
+#if UNITY_EDITOR
+        Debug_currentGold = _p.currentGold;
+        Debug_OverrideCurrentGold = false;
+#endif
+    }
+
+    public void SetPlayerData()
+    {
+        playerData = GameManager.Instance.player;
+        
     }
 
     public PlayerData ReadPlayerData()
@@ -203,16 +220,17 @@ public class DataManager : MonoBehaviour
         _p.currentWeaponidx = PlayerPrefs.GetInt("WeaponIdx", 0);
         _p.currentArmoridx = PlayerPrefs.GetInt("ArmorIdx", 0);
         _p.currentShieldidx = PlayerPrefs.GetInt("ShieldIdx", 0);
-        _p.currentWeaponDur = PlayerPrefs.GetInt("CurrentWeaponDur", 0);
-        _p.currentArmorDur = PlayerPrefs.GetInt("CurrentArmorDur", 0);
-        _p.currentShieldDur = PlayerPrefs.GetInt("CurrentShieldDur", 0);
+        _p.currentWeaponDur = PlayerPrefs.GetInt("CurrentWeaponDur", 1);
+        _p.currentArmorDur = PlayerPrefs.GetInt("CurrentArmorDur", 1);
+        _p.currentShieldDur = PlayerPrefs.GetInt("CurrentShieldDur", 1);
         _p.currentTrainingPoints = PlayerPrefs.GetInt("CurrentTrainingPoints", 0);
-        _p.currentGold = PlayerPrefs.GetInt("CurrentGold", 0);
+        _p.currentGold = PlayerPrefs.GetInt("CurrentGold", 50);
         return _p;
     }
 
     public void SavePlayerData()
     {
+        playerData = GameManager.Instance.player;
         PlayerPrefs.SetString("PlayerName", playerData.playerName);
         PlayerPrefs.SetInt("WeaponIdx", playerData.currentWeaponidx);
         PlayerPrefs.SetInt("ArmorIdx", playerData.currentArmoridx);
@@ -221,8 +239,14 @@ public class DataManager : MonoBehaviour
         PlayerPrefs.SetInt("CurrentArmorDur", playerData.currentArmorDur);
         PlayerPrefs.SetInt("CurrentShieldDur", playerData.currentShieldDur);
         PlayerPrefs.SetInt("CurrentTrainingPoints", playerData.currentTrainingPoints);
+#if UNITY_EDITOR
+        if (Debug_OverrideCurrentGold)
+            playerData.currentGold = Debug_currentGold;        
+#endif
         PlayerPrefs.SetInt("CurrentGold", playerData.currentGold);
+
     }
+
 
     public PlayerData GetPlayerData()
     {
@@ -231,7 +255,7 @@ public class DataManager : MonoBehaviour
 
     public Sprite GetItemImage(string _type, int _idx)
     {
-        Debug.Log($"Item Image Requested => Type={_type}, Index={_idx}");
+        // Debug.Log($"Item Image Requested => Type={_type}, Index={_idx}");
 
         if(Weapons.Count == 0 || Armors.Count == 0 || Shields.Count == 0)
             InitItemData();
@@ -240,7 +264,7 @@ public class DataManager : MonoBehaviour
             return weaponSprites[_idx];
         else if (_type.Equals("Armor"))
             return armorSprites[_idx];
-        else if (_type.Equals("Armor"))
+        else if (_type.Equals("Shield"))
             return shieldSprites[_idx];
         else
             return weaponSprites[0];
@@ -248,8 +272,6 @@ public class DataManager : MonoBehaviour
 
     public int GetItemMaxDurability(string _type, int _idx)
     {
-        Debug.Log($"Item MaxDurability Requested => Type={_type}, Index={_idx}");
-
         if (Weapons.Count == 0 || Armors.Count == 0 || Shields.Count == 0)
             InitItemData();
 

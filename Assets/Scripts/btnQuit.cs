@@ -7,7 +7,11 @@ public class btnQuit : MonoBehaviour
     public void QuitGame()
     {
         Debug.Log("Gonna Quit This Game!");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 
 

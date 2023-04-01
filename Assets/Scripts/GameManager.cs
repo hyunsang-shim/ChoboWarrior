@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        sInstance = this;
         DM = DataManager.Instance;
     }
 
@@ -36,13 +37,16 @@ public class GameManager : MonoBehaviour
 
         
         player.currentArmoridx = 1;
-        player.currentArmor = DM.Weapons[player.currentArmoridx];
+        player.currentArmorDur = 1;
+        player.currentArmor = DM.Armors[player.currentArmoridx];
 
         player.currentWeaponidx = 2;
+        player.currentWeaponDur = 2;
         player.currentWeapon = DM.Weapons[player.currentWeaponidx];
 
         player.currentShieldidx = 3;
-        player.currentShield= DM.Weapons[player.currentShieldidx];
+        player.currentShieldDur = 3;
+        player.currentShield= DM.Shields[player.currentShieldidx];
 
 
 
@@ -52,6 +56,10 @@ public class GameManager : MonoBehaviour
             o.Refresh();
     }
 
+    public int GetCurrentGold()
+    {
+        return player.currentGold;
+    }
 
 
 }

@@ -8,13 +8,16 @@ public class UIPlayerGearDisplay : MonoBehaviour
     public enum GearType{
         Weapon = 0,
         Armor = 1,
-        Shield = 2
+        Shield = 2,
+        Point = 100,
+        TrainingPoints = 200
+
     }
 
     public int gearIdx;
     public int currentDur;
     public int maxDur;
-    public GearType gearType;
+    public GearType UIType;
     public string type;
     DataManager.PlayerData _p;
     DataManager.ItemData _i;
@@ -26,41 +29,13 @@ public class UIPlayerGearDisplay : MonoBehaviour
 
     private void Awake()
     {
-        _g = GameManager.Instance;
 
-        switch (gearType)
-        {
-            case GearType.Weapon:
-                gearIdx = _p.currentWeaponidx;
-                type = "Weapon";
-                slider.maxValue = _p.currentWeapon.maxDur;
-                slider.value = _p.currentWeaponDur;
-                gearName.text = _p.currentWeapon.itemName;
-                gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
-                break;
-            case GearType.Armor:
-                gearIdx = _p.currentArmoridx;
-                type = "Armor";
-                slider.maxValue = _p.currentArmor.maxDur;
-                slider.value = _p.currentArmorDur;
-                gearName.text = _p.currentArmor.itemName;
-                gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
-                break;
-            case GearType.Shield:
-                gearIdx = _p.currentShieldidx;
-                type = "Shield";
-                slider.maxValue = _p.currentShield.maxDur;
-                slider.value = _p.currentShieldDur;
-                gearName.text = _p.currentShield.itemName;
-                gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
-                break;
-        }
+        
 
     }
     private void Start()
     {
-        // _p = GameManager.Instance.DM.GetPlayerData();
-       
+        _g = GameManager.Instance;
 
     }
 
@@ -69,33 +44,38 @@ public class UIPlayerGearDisplay : MonoBehaviour
 
         _p = DataManager.Instance.GetPlayerData();
 
-        switch (gearType)
+        switch (UIType)
         {
             case GearType.Weapon:
                 gearIdx = _p.currentWeaponidx;
                 type = "Weapon";
-                slider.maxValue = _p.currentWeapon.maxDur;
-                slider.value = _p.currentWeaponDur;
+                slider.maxValue = gearIdx == 0 ? 1 : _p.currentWeapon.maxDur;
+                slider.value = gearIdx == 0 ? 1 : _p.currentWeaponDur;
                 gearName.text = _p.currentWeapon.itemName;
                 gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
                 break;
             case GearType.Armor:
                 gearIdx = _p.currentArmoridx;
                 type = "Armor";
-                slider.maxValue = _p.currentArmor.maxDur;
-                slider.value = _p.currentArmorDur;
+                slider.maxValue = gearIdx == 0 ? 1 : _p.currentArmor.maxDur;
+                slider.value = gearIdx == 0 ? 1 : _p.currentArmorDur;
                 gearName.text = _p.currentArmor.itemName;
                 gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
                 break;
             case GearType.Shield:
                 gearIdx = _p.currentShieldidx;
                 type = "Shield";
-                slider.maxValue = _p.currentShield.maxDur;
-                slider.value = _p.currentShieldDur;
+                slider.maxValue = gearIdx == 0 ? 1 : _p.currentShield.maxDur;
+                slider.value = gearIdx == 0 ? 1 : _p.currentShieldDur;
                 gearName.text = _p.currentShield.itemName;
                 gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
                 break;
+            case GearType.Point:
+                gearName.text = _p.currentGold.ToString() + " pt";
+                break;
         }
+
+        DataManager.Instance.SetPlayerData(_p);
     }
 
 }

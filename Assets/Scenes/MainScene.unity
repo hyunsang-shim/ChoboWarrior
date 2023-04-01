@@ -641,7 +641,7 @@ MonoBehaviour:
   gearIdx: 0
   currentDur: 0
   maxDur: 0
-  gearType: 0
+  UIType: 0
   type: 
   gearImage: {fileID: 1513217937}
   gearName: {fileID: 2100182790}
@@ -1619,7 +1619,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.16470589, g: 0.8392157, b: 0.011764706, a: 0.75686276}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1634,7 +1634,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1507998198}
   m_FillRect: {fileID: 1507998197}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
@@ -1721,7 +1721,7 @@ MonoBehaviour:
   gearIdx: 0
   currentDur: 0
   maxDur: 0
-  gearType: 1
+  UIType: 2
   type: 
   gearImage: {fileID: 400381708}
   gearName: {fileID: 1064210717}
@@ -2221,7 +2221,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2403,6 +2403,7 @@ MonoBehaviour:
   - {fileID: 453489999}
   - {fileID: 2038894101}
   - {fileID: 792385922}
+  - {fileID: 1672887740}
 --- !u!4 &1428243459
 Transform:
   m_ObjectHideFlags: 0
@@ -3033,7 +3034,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.16470589, g: 0.8392157, b: 0.011764706, a: 0.75686276}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3048,7 +3049,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 651879874}
   m_FillRect: {fileID: 651879873}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
@@ -3339,6 +3340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1672887739}
+  - component: {fileID: 1672887740}
   m_Layer: 5
   m_Name: Points
   m_TagString: Untagged
@@ -3368,6 +3370,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1672887740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672887738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77c88c400fdd39645ab6fd539312d0c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gearIdx: 0
+  currentDur: 0
+  maxDur: 0
+  UIType: 100
+  type: 
+  gearImage: {fileID: 0}
+  gearName: {fileID: 826658971}
+  slider: {fileID: 0}
 --- !u!1 &1704110653
 GameObject:
   m_ObjectHideFlags: 0
@@ -4095,7 +4117,7 @@ MonoBehaviour:
   gearIdx: 0
   currentDur: 0
   maxDur: 0
-  gearType: 2
+  UIType: 1
   type: 
   gearImage: {fileID: 1704110656}
   gearName: {fileID: 619977510}
