@@ -458,13 +458,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4864531821113109061}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8cf1eb364624a408a9460d27ab93ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 12ac8a7f77cd3c043b86889ccde8555e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtTraining: {fileID: 2943283303540998122}
-  progress: 0
-  trainingSuccessRate: 0
-  baseTrainingSuccessRate: 0
+  Progress: {fileID: 2216953471333333401}
+  btnAbort: {fileID: 5095176724010322096}
+  Result_Success: {fileID: 5417396877208396630, guid: 4b70be49ed17daa43bb06d38a01e07e4, type: 3}
+  Result_GreatSuccess: {fileID: 5417396877208396630, guid: 574c02724efd1d143ad4b09b1c74663d, type: 3}
+  Result_Fail: {fileID: 3327684050645692551, guid: 474c1dda11ee26a49819e0aac7ca7a6a, type: 3}
+  TrainingTime: 3
 --- !u!1 &5126675920842336869
 GameObject:
   m_ObjectHideFlags: 0
