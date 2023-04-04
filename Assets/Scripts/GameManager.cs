@@ -11,6 +11,13 @@ public class GameManager : MonoBehaviour
     public DataManager.PlayerData player;
     public UIPlayerGearDisplay[] uiGearUIs;
 
+    public GameObject go_popupTraining;
+    public GameObject go_popupBattle;
+    public GameObject go_popupResult;
+
+
+    float trainingSuccessRate;
+    float battleSuccessRate;
 
 
     private static GameManager sInstance;
@@ -34,21 +41,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         player = DM.ReadPlayerData();
-
-        
-        player.currentArmoridx = 1;
-        player.currentArmorDur = 1;
-        player.currentArmor = DM.Armors[player.currentArmoridx];
-
-        player.currentWeaponidx = 2;
-        player.currentWeaponDur = 2;
-        player.currentWeapon = DM.Weapons[player.currentWeaponidx];
-
-        player.currentShieldidx = 3;
-        player.currentShieldDur = 3;
-        player.currentShield= DM.Shields[player.currentShieldidx];
-
-
+        UpdateCurrentGear(player.currentWeaponidx, player.currentArmoridx, player.currentShieldidx);       
+        UpdateCurrentSuccessProbs();
 
         DM.SetPlayerData(player);
 
@@ -60,6 +54,85 @@ public class GameManager : MonoBehaviour
     {
         return player.currentGold;
     }
+
+
+    /// <summary>
+    /// make sure to do UpdateCurrentSuccessProbs() after UpdateCurrentGear()
+    /// </summary>
+    /// <param name="_WeaponID"></param>
+    /// <param name="_ArmorID"></param>
+    /// <param name="_ShieldID"></param>
+    void UpdateCurrentGear(int _WeaponID, int _ArmorID, int _ShieldID)
+    {
+        player.currentArmoridx = _ArmorID;
+        player.currentWeaponidx = _WeaponID;
+        player.currentShieldidx = _ShieldID;
+
+        player.currentArmor = DM.GetItemData("Armor", _ArmorID);
+        player.currentWeapon = DM.GetItemData("Weapon", _WeaponID);
+        player.currentShield = DM.GetItemData("Shield", _ShieldID);
+
+        DM.SavePlayerData();
+
+        foreach (UIPlayerGearDisplay o in uiGearUIs)
+            o.Refresh();
+    }
+
+    void UpdateCurrentSuccessProbs()
+    {
+        trainingSuccessRate = player.currentArmor.TrainingSuccessProb + player.currentWeapon.TrainingSuccessProb + player.currentShield.TrainingSuccessProb;
+        battleSuccessRate = player.currentArmor.battleSuccessProb + player.currentWeapon.battleSuccessProb + player.currentShield.battleSuccessProb;
+    }
+
+    public int CheckSuccess(string _checkTarget)
+    {
+        return 0;
+        int r1 = 0;
+        int p = Random.Range(0, 100000);
+
+        if (_checkTarget.Equals("Training"))
+        {
+            Debug.Log($"p = {p}, / {trainingSuccessRate}");
+            if (p <= trainingSuccessRate)
+                r1 = 1;                
+        }
+        else if (_checkTarget.Equals("Battle"))
+        {
+            if (p <= battleSuccessRate)
+                r1 = 1;
+        }
+
+        r1 += (Random.Range(0, 100000) <= 10000) ? 1 : 0;
+
+
+        return r1;
+
+    }
+
+    public void StartTraining()
+    {
+        if (go_popupTraining == null)
+        {
+            Debug.Log("Training popup is null");
+            go_popupTraining = Instantiate(Resources.Load("Prefabs/UI/popupTraining") as GameObject);
+            go_popupTraining.transform.parent = GameObject.Find("UIRoot").transform;
+            go_popupTraining.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+            go_popupTraining.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+        }
+        else if (!go_popupTraining.activeSelf)
+        {
+            Debug.Log("Training popup is not null and not active");
+            go_popupTraining.SetActive(true);
+        }
+        else
+        { go_popupTraining.SetActive(true); }
+    }
+
+    public void DisableObject(GameObject _o)
+    {
+        _o.gameObject.SetActive(false);
+    }
+
 
 
 }

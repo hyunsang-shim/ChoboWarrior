@@ -2404,6 +2404,9 @@ MonoBehaviour:
   - {fileID: 2038894101}
   - {fileID: 792385922}
   - {fileID: 1672887740}
+  go_popupTraining: {fileID: 0}
+  go_popupBattle: {fileID: 0}
+  go_popupResult: {fileID: 0}
 --- !u!4 &1428243459
 Transform:
   m_ObjectHideFlags: 0
@@ -2504,9 +2507,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1428243458}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ShowTrainingPopup
+        m_MethodName: StartTraining
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

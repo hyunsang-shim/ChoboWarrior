@@ -284,4 +284,18 @@ public class DataManager : MonoBehaviour
         else
             return 1;
     }
+
+    public ItemData GetItemData(string _type, int _index)
+    {
+        ItemData r = new ItemData();
+
+        if (_type.Equals("Weapon"))
+            r = Weapons[_index];
+        else if (_type.Equals("Armor"))
+            r = Armors[_index];
+        else if (_type.Equals("Shield"))
+            r = Shields[_index];
+
+        return r;
+    }
 }                        
