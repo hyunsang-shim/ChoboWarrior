@@ -75,7 +75,10 @@ public class GameManager : MonoBehaviour
         DM.SavePlayerData();
 
         foreach (UIPlayerGearDisplay o in uiGearUIs)
+        {
+            Debug.Log($"o = {o.name}");
             o.Refresh();
+        }
     }
 
     void UpdateCurrentSuccessProbs()
@@ -86,7 +89,6 @@ public class GameManager : MonoBehaviour
 
     public int CheckSuccess(string _checkTarget)
     {
-        return 0;
         int r1 = 0;
         int p = Random.Range(0, 100000);
 
@@ -102,8 +104,19 @@ public class GameManager : MonoBehaviour
                 r1 = 1;
         }
 
-        r1 += (Random.Range(0, 100000) <= 10000) ? 1 : 0;
+        // Debug always success
+        r1 = 1;
+        
+        // r1 += (Random.Range(0, 100000) <= 10000) ? 1 : 0;       // noremal code
 
+        if (r1 >= 1)
+            player.currentTrainingPoints++;
+
+        if (player.currentTrainingPoints > 5)
+            player.currentTrainingPoints = 5;
+
+
+        Debug.Log($"r1 = {r1}");
 
         return r1;
 

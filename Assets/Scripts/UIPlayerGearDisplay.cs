@@ -25,6 +25,7 @@ public class UIPlayerGearDisplay : MonoBehaviour
     public Image gearImage;
     public Text gearName;
     public Slider slider;
+    public Image[] trainingPoints;
 
 
     private void Awake()
@@ -71,7 +72,13 @@ public class UIPlayerGearDisplay : MonoBehaviour
                 gearImage.sprite = DataManager.Instance.GetItemImage(type, gearIdx);
                 break;
             case GearType.Point:
+                type = "Point";
                 gearName.text = _p.currentGold.ToString() + " pt";
+                break;
+            case GearType.TrainingPoints:
+                type = "TrainingPoints";
+                for (int i = 0; i < _p.currentTrainingPoints; i++)
+                    trainingPoints[i].gameObject.SetActive(true);
                 break;
         }
 

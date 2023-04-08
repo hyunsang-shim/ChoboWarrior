@@ -69,7 +69,12 @@ public class popup_Training : MonoBehaviour
 
     void CallFailPopup()    {       
         Debug.Log("Training Fail");
-        ResultPopup_fail = (ResultPopup_fail == null) ? (ResultPopup_fail = Instantiate(Result_Fail)) : this.gameObject;
+
+        if (ResultPopup_fail == null)
+            ResultPopup_fail = Instantiate(Result_Fail);
+        else if (!ResultPopup_fail.activeSelf)
+            ResultPopup_fail.SetActive(true);
+        
         ResultPopup_fail.GetComponentInChildren<Button>().onClick.AddListener(() => GameManager.Instance.DisableObject(ResultPopup_fail));
         ResetPopupTransformAndSize(ResultPopup_fail);
 
@@ -81,12 +86,16 @@ public class popup_Training : MonoBehaviour
 
     void CallSuccessPopup() {       
         Debug.Log("Training Success");
-        ResultPopup_success = Instantiate(Result_Success);
+        if (ResultPopup_success == null)
+            ResultPopup_success = Instantiate(Result_Success);
+        else if (!ResultPopup_success.activeSelf)
+            ResultPopup_success.SetActive(true); 
+
         ResultPopup_success.GetComponentInChildren<Button>().onClick.AddListener(() => GameManager.Instance.DisableObject(ResultPopup_success));
         ResetPopupTransformAndSize(ResultPopup_success);
 
         if (Random.Range(0, 100000) <= 25000)
-            Debug.Log("Durability Dropped");
+            Debug.Log("Durability Not Dropped");
 
         gameObject.SetActive(false);
     }
