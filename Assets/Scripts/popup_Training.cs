@@ -107,7 +107,7 @@ public class popup_Training : MonoBehaviour
 
     void ResetPopupTransformAndSize(GameObject _o)
     {
-        _o.transform.parent = UIRoot.transform;
+        _o.transform.SetParent(UIRoot.transform);
         _o.GetComponent<RectTransform>().offsetMax = Vector2.zero;
         _o.GetComponent<RectTransform>().offsetMin = Vector2.zero;
     }

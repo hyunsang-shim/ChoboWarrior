@@ -203,14 +203,17 @@ public class DataManager : MonoBehaviour
         //DEbug Purpose only;
 #if UNITY_EDITOR
         Debug_currentGold = _p.currentGold;
-        Debug_OverrideCurrentGold = false;
 #endif
     }
 
     public void SetPlayerData()
     {
         playerData = GameManager.Instance.player;
-        
+
+        //DEbug Purpose only;
+#if UNITY_EDITOR
+        Debug_currentGold = GameManager.Instance.player.currentGold;
+#endif
     }
 
     public PlayerData ReadPlayerData()
@@ -225,6 +228,7 @@ public class DataManager : MonoBehaviour
         _p.currentShieldDur = PlayerPrefs.GetInt("CurrentShieldDur", 1);
         _p.currentTrainingPoints = PlayerPrefs.GetInt("CurrentTrainingPoints", 0);
         _p.currentGold = PlayerPrefs.GetInt("CurrentGold", 50);
+        _p.currentGold = 120;
         return _p;
     }
 

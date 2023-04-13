@@ -1768,7 +1768,6 @@ GameObject:
   - component: {fileID: 114211894720006997}
   - component: {fileID: 114211894720006994}
   - component: {fileID: 114211894720006995}
-  - component: {fileID: 114211894720006996}
   m_Layer: 5
   m_Name: popupShop
   m_TagString: Untagged
@@ -1836,27 +1835,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &114211894720006996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114211894720006998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65e50f1c0cac07e4ab900a2fc2adf92f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemPriceInfo: {fileID: 114211894310277503}
-  calcInfo: {fileID: 114211893959872376}
-  itemList: {fileID: 114211893478420183}
-  txtItemName: {fileID: 114211893204260521}
-  txtItemPrice: {fileID: 114211893693685444}
-  txtAfterPurchasePoint: {fileID: 114211894080679827}
-  txtMyPoints: {fileID: 114211892879052192}
-  btnBuy: {fileID: 114211894884329276}
-  btnClose: {fileID: 114211892924084043}
 --- !u!1 &114211894819119050
 GameObject:
   m_ObjectHideFlags: 0

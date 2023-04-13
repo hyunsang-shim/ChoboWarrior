@@ -456,7 +456,6 @@ GameObject:
   - component: {fileID: 8466098363327210178}
   - component: {fileID: 8808675033232190341}
   - component: {fileID: 2355657947284781258}
-  - component: {fileID: 3020344607046656117}
   m_Layer: 5
   m_Name: popupBattle
   m_TagString: Untagged
@@ -526,20 +525,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3020344607046656117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4864531821113109061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2253fbe0f3704be4693750c5610ede33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  txtTraining: {fileID: 2943283303540998122}
-  progress: 0
 --- !u!1 &5720267277531022593
 GameObject:
   m_ObjectHideFlags: 0

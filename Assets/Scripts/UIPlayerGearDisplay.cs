@@ -17,6 +17,7 @@ public class UIPlayerGearDisplay : MonoBehaviour
     public int gearIdx;
     public int currentDur;
     public int maxDur;
+    public int currentPoints = 0;
     public GearType UIType;
     public string type;
     DataManager.PlayerData _p;
@@ -26,6 +27,7 @@ public class UIPlayerGearDisplay : MonoBehaviour
     public Text gearName;
     public Slider slider;
     public Image[] trainingPoints;
+    
 
 
     private void Awake()
@@ -73,6 +75,7 @@ public class UIPlayerGearDisplay : MonoBehaviour
                 break;
             case GearType.Point:
                 type = "Point";
+                currentPoints = _p.currentGold;
                 gearName.text = _p.currentGold.ToString() + " pt";
                 break;
             case GearType.TrainingPoints:
