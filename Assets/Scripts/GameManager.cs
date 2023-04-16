@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     public int battleSuccessReward = 15;
 
 
+    public int defaultTrainingSuccessRate = 1000;
+    public int defaultBattleSuccessRate = 1000;
+
     private static GameManager sInstance;
     public static GameManager Instance
     {
@@ -86,8 +89,8 @@ public class GameManager : MonoBehaviour
 
     void UpdateCurrentSuccessProbs()
     {
-        trainingSuccessRate = player.currentArmor.TrainingSuccessProb + player.currentWeapon.TrainingSuccessProb + player.currentShield.TrainingSuccessProb;
-        battleSuccessRate = player.currentArmor.battleSuccessProb + player.currentWeapon.battleSuccessProb + player.currentShield.battleSuccessProb;
+        trainingSuccessRate = defaultTrainingSuccessRate + player.currentArmor.TrainingSuccessProb + player.currentWeapon.TrainingSuccessProb + player.currentShield.TrainingSuccessProb;
+        battleSuccessRate = defaultBattleSuccessRate + player.currentArmor.battleSuccessProb + player.currentWeapon.battleSuccessProb + player.currentShield.battleSuccessProb;
     }
 
     public int CheckSuccess(string _checkTarget)
@@ -134,6 +137,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Success? (1=yes/0=no) = {r1}");
         Debug.Log($"gold = {player.currentGold}");
+        Debug.Log($"training buff = {player.currentTrainingPoints}");
 
         UpdateUIs();
         return r1;
@@ -180,8 +184,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-
     public void DisableObject(GameObject _o)
     {
         _o.gameObject.SetActive(false);
@@ -192,6 +194,7 @@ public class GameManager : MonoBehaviour
         foreach (UIPlayerGearDisplay o in uiGearUIs)
         {
             o.Refresh();
+            Debug.Log($"{o.name} refreshed");
         }
     }
 

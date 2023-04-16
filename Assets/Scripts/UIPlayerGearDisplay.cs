@@ -30,16 +30,9 @@ public class UIPlayerGearDisplay : MonoBehaviour
     
 
 
-    private void Awake()
-    {
-
-        
-
-    }
     private void Start()
     {
         _g = GameManager.Instance;
-
     }
 
     public void Refresh()
@@ -80,8 +73,15 @@ public class UIPlayerGearDisplay : MonoBehaviour
                 break;
             case GearType.TrainingPoints:
                 type = "TrainingPoints";
-                for (int i = 0; i < _p.currentTrainingPoints; i++)
-                    trainingPoints[i].gameObject.SetActive(true);
+                for (int i = 0; i < 5; i++)
+                {
+                    if (i < _p.currentTrainingPoints)
+                    {
+                        trainingPoints[i].GetComponent<Image>().color = new Color(0.3f, 1.0f, 0f, 1f);
+                    }
+                    else
+                        trainingPoints[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, 1f);
+                }
                 break;
         }
 
