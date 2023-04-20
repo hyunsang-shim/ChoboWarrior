@@ -7,5 +7,7 @@ public class btnClosePopup : MonoBehaviour
     public btnClosePopup()
     {
         Destroy(gameObject);
+        GameManager.Instance.UpdateUIs();
+
     }
 }

@@ -16,13 +16,13 @@ public class popup_Battle : MonoBehaviour
     public GameObject UIRoot;
 
 
-    public float TrainingTime;
+    public float BattleTime;
 
     bool aborted = false;
 
     private void Start()
     {
-        Progress.maxValue = TrainingTime;
+        Progress.maxValue = BattleTime;
         Progress.value = 0f;
 
         ResetPopupTransformAndSize(gameObject);
@@ -34,12 +34,13 @@ public class popup_Battle : MonoBehaviour
     }
 
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        Progress.value += Time.fixedDeltaTime;
+            Progress.value += Time.fixedDeltaTime;
+
         if (aborted == false)
         {
-            if (Progress.value >= TrainingTime)
+            if (Progress.value >= BattleTime)
             {
                 switch (GameManager.Instance.CheckSuccess("Battle"))
                 {
@@ -58,7 +59,7 @@ public class popup_Battle : MonoBehaviour
                 }
 
 
-                Progress.maxValue = TrainingTime;
+                Progress.maxValue = BattleTime;
                 Progress.value = 0f;
             }
         }
@@ -67,7 +68,8 @@ public class popup_Battle : MonoBehaviour
 
     void CallFailPopup()
     {
-        Debug.Log("Battle Fail");
+        ResetTrainingPointBuff();
+//        Debug.Log("Battle Fail");
 
         if (ResultPopup_fail == null)
             ResultPopup_fail = Instantiate(Result_Fail);
@@ -85,7 +87,9 @@ public class popup_Battle : MonoBehaviour
 
     void CallSuccessPopup()
     {
-        Debug.Log("Battle Success");
+        ResetTrainingPointBuff();
+
+//        Debug.Log("Battle Success");
         if (ResultPopup_success == null)
             ResultPopup_success = Instantiate(Result_Success);
         else if (!ResultPopup_success.activeSelf)
@@ -101,9 +105,13 @@ public class popup_Battle : MonoBehaviour
     }
     void CallGreatSuccessPopup()
     {
-        Debug.Log("Battle Greatly Success");
+        ResetTrainingPointBuff();
+
+//        Debug.Log("Battle Greatly Success");
         if (Random.Range(0, 1000000) <= 50000)
             Debug.Log("Durability Dropped");
+
+        gameObject.SetActive(false);
     }
 
     void ResetPopupTransformAndSize(GameObject _o)
@@ -111,5 +119,11 @@ public class popup_Battle : MonoBehaviour
         _o.transform.SetParent(UIRoot.transform);
         _o.GetComponent<RectTransform>().offsetMax = Vector2.zero;
         _o.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+    }
+
+
+    void ResetTrainingPointBuff()
+    {
+        GameManager.Instance.player.currentTrainingPoints = 0;
     }
 }

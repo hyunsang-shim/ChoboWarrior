@@ -466,7 +466,11 @@ MonoBehaviour:
   Result_Success: {fileID: 5417396877208396630, guid: 4b70be49ed17daa43bb06d38a01e07e4, type: 3}
   Result_GreatSuccess: {fileID: 5417396877208396630, guid: 574c02724efd1d143ad4b09b1c74663d, type: 3}
   Result_Fail: {fileID: 3327684050645692551, guid: 474c1dda11ee26a49819e0aac7ca7a6a, type: 3}
-  TrainingTime: 3
+  ResultPopup_fail: {fileID: 0}
+  ResultPopup_success: {fileID: 0}
+  ResultPopup_great: {fileID: 0}
+  UIRoot: {fileID: 0}
+  TrainingTime: 5
 --- !u!1 &5126675920842336869
 GameObject:
   m_ObjectHideFlags: 0

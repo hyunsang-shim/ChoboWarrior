@@ -547,7 +547,7 @@ MonoBehaviour:
   ResultPopup_success: {fileID: 0}
   ResultPopup_great: {fileID: 0}
   UIRoot: {fileID: 0}
-  TrainingTime: 5
+  BattleTime: 5
 --- !u!1 &5720267277531022593
 GameObject:
   m_ObjectHideFlags: 0

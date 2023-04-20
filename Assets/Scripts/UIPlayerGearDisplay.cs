@@ -73,6 +73,7 @@ public class UIPlayerGearDisplay : MonoBehaviour
                 break;
             case GearType.TrainingPoints:
                 type = "TrainingPoints";
+                Debug.Log($"_p.currentTrainingPoints: {_p.currentTrainingPoints}");
                 for (int i = 0; i < 5; i++)
                 {
                     if (i < _p.currentTrainingPoints)
@@ -81,7 +82,7 @@ public class UIPlayerGearDisplay : MonoBehaviour
                     }
                     else
                         trainingPoints[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, 1f);
-                }
+                }                
                 break;
         }
 

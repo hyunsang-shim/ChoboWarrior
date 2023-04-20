@@ -8,7 +8,7 @@ public static class InfiniteLoopDetector
 {
     private static string prevPoint = "";
     private static int detectionCount = 0;
-    private const int DetectionThreshold = 100000;
+    private const int DetectionThreshold = 2;
 
     [System.Diagnostics.Conditional("UNITY_EDITOR")]
     public static void Run(

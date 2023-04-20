@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         player = DM.ReadPlayerData();
         UpdateCurrentGear(player.currentWeaponidx, player.currentArmoridx, player.currentShieldidx);       
         UpdateCurrentSuccessProbs();
-        Debug.Log($"current Goild at startup: {player.currentGold}");
+//        Debug.Log($"current Goild at startup: {player.currentGold}");
         DM.SetPlayerData(player);
 
         UpdateUIs();
@@ -78,23 +78,25 @@ public class GameManager : MonoBehaviour
         player.currentShield = DM.GetItemData("Shield", _ShieldID);
 
 
-        Debug.Log($"UpdateCurrentGear");
+//        Debug.Log($"UpdateCurrentGear");
 
         DM.SavePlayerData();
-        Debug.Log($" DM.SavePlayerData();");
+//        Debug.Log($" DM.SavePlayerData();");
 
         UpdateUIs();
-        Debug.Log($" UpdateUIs();");
+//        Debug.Log($" UpdateUIs();");
     }
 
     void UpdateCurrentSuccessProbs()
     {
         trainingSuccessRate = defaultTrainingSuccessRate + player.currentArmor.TrainingSuccessProb + player.currentWeapon.TrainingSuccessProb + player.currentShield.TrainingSuccessProb;
         battleSuccessRate = defaultBattleSuccessRate + player.currentArmor.battleSuccessProb + player.currentWeapon.battleSuccessProb + player.currentShield.battleSuccessProb;
+        Debug.Log($"training prob: {trainingSuccessRate}, battle prob: {battleSuccessRate}");
     }
 
     public int CheckSuccess(string _checkTarget)
     {
+        InfiniteLoopDetector.Run();
         int r1 = 0;
         int p = Random.Range(0, 100000);
         int reward = 0;
@@ -107,37 +109,56 @@ public class GameManager : MonoBehaviour
                 r1 = 1;
                 reward = trainingSuccessReward;
             }
+
+            // Debug always success
+            r1 = 1;
+            reward = trainingSuccessReward;
+            // r1 += (Random.Range(0, 100000) <= 10000) ? 1 : 0;       // noremal code
+
+            if (r1 >= 1)
+            {
+                player.currentTrainingPoints++;
+                player.currentGold += reward;
+                DM.SetPlayerData(player);
+                //            Debug.Log($"DM.SetPlayerData(player) / currentTrainingPoints:{player.currentTrainingPoints} / currentReward:{reward}");
+
+            }
+
+            if (player.currentTrainingPoints > 5)
+                player.currentTrainingPoints = 5;
+
+
         }
         else if (_checkTarget.Equals("Battle"))
         {
+
+            Debug.Log($"p = {p} / {battleSuccessRate}");
+
             if (p <= battleSuccessRate)
             {
                 r1 = 1;
                 reward = battleSuccessReward;
             }
-        }
 
-        // Debug always success
-        r1 = 1;
-        reward = trainingSuccessReward;
-        // r1 += (Random.Range(0, 100000) <= 10000) ? 1 : 0;       // noremal code
-
-        if (r1 >= 1)
-        {
-            player.currentTrainingPoints++;
-            player.currentGold += reward;
-            DM.SetPlayerData(player);
-            Debug.Log($"DM.SetPlayerData(player) / currentTrainingPoints:{player.currentTrainingPoints} / currentReward:{reward}");
+            // Debug always success
+            r1 = 1;
+            reward = battleSuccessReward;
+            // r1 += (Random.Range(0, 100000) <= 10000) ? 1 : 0;       // noremal code
+            if (r1 > 0)
+            {
+                DM.SetPlayerData(player);
+                player.currentGold += reward;
+                //            Debug.Log($"DM.SetPlayerData(player) / currentTrainingPoints:{player.currentTrainingPoints} / currentReward:{reward}");
+            }
 
         }
 
-        if (player.currentTrainingPoints >= 5)
-            player.currentTrainingPoints = 4;
+        
 
 
-        Debug.Log($"Success? (1=yes/0=no) = {r1}");
-        Debug.Log($"gold = {player.currentGold}");
-        Debug.Log($"training buff = {player.currentTrainingPoints}");
+//       Debug.Log($"Success? (1=yes/0=no) = {r1}");
+//        Debug.Log($"gold = {player.currentGold}");
+//       Debug.Log($"training buff = {player.currentTrainingPoints}");
 
         UpdateUIs();
         return r1;
@@ -148,7 +169,7 @@ public class GameManager : MonoBehaviour
     {
         if (go_popupTraining == null)
         {
-            Debug.Log("Training popup is null");
+//            Debug.Log("Training popup is null");
             go_popupTraining = Instantiate(Resources.Load("Prefabs/UI/popupTraining") as GameObject);
             go_popupTraining.transform.SetParent(GameObject.Find("UIRoot").transform);
             go_popupTraining.GetComponent<RectTransform>().offsetMin = Vector2.zero;
@@ -156,11 +177,9 @@ public class GameManager : MonoBehaviour
         }
         else if (!go_popupTraining.activeSelf)
         {
-            Debug.Log("Training popup is not null and not active");
+//            Debug.Log("Training popup is not null and not active");
             go_popupTraining.SetActive(true);
         }
-        else
-        { go_popupTraining.SetActive(true); }
     }
 
 
@@ -168,19 +187,22 @@ public class GameManager : MonoBehaviour
     {
         if (go_popupBattle == null)
         {
-            Debug.Log("Training popup is null");
+            Debug.Log("Battle popup is null");
             go_popupBattle = Instantiate(Resources.Load("Prefabs/UI/popupBattle") as GameObject);
             go_popupBattle.transform.SetParent(GameObject.Find("UIRoot").transform);
             go_popupBattle.GetComponent<RectTransform>().offsetMin = Vector2.zero;
             go_popupBattle.GetComponent<RectTransform>().offsetMax = Vector2.zero;
         }
-        else if (!go_popupBattle.activeSelf)
+        else if (go_popupBattle.activeSelf == false)
         {
-            Debug.Log("Training popup is not null and not active");
+           Debug.Log("Battle popup is not null and not active");
             go_popupBattle.SetActive(true);
         }
         else
-        { go_popupBattle.SetActive(true); }
+        {
+            Debug.Log("Battle popup is not null and active");             
+            go_popupBattle.SetActive(true);
+        }
     }
 
 
